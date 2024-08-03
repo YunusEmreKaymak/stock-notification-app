@@ -1,0 +1,32 @@
+{
+  "alerts": [
+    {
+      "id": "c2c53375-9e13-47ca-8d81-9d5248002597",
+      "stockName" : "AAPL",
+      "maxPrice": 300.0,
+      "minPrice": 100.0,
+      "active": true
+    },
+    {
+      "id": "9c7eaea3-9365-460e-b3e8-8f86d8f8421d",
+      "stockName" : "INTC",
+      "maxPrice": 50.0,
+      "minPrice": 10.0,
+      "active": true
+    },
+    {
+      "id": "3f7fa687-2c6b-48f2-bc38-0dad60873a0e",
+      "stockName" : "NVDA",
+      "maxPrice": 200.0,
+      "minPrice": 50.0,
+      "active": false
+    },
+    {
+      "id": "934fb243-9943-4d82-a484-61d6e53946d9",
+      "stockName" : "TSLA",
+      "maxPrice": 400.0,
+      "minPrice": 80.0,
+      "active": true
+    }
+  ]
+}
