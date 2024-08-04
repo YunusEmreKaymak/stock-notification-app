@@ -14,8 +14,7 @@ public class FetchStock {
         HttpRequest req = HttpRequest.newBuilder()
                 .uri(new URI("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + stockName + "&apikey=" + apiKey))
                 .build();
-        String stockHistory = client.sendAsync(req, HttpResponse.BodyHandlers.ofString()).get().body();
 
-        return stockHistory;
+        return client.sendAsync(req, HttpResponse.BodyHandlers.ofString()).get().body();
     }
 }
