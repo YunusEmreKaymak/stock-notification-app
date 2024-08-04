@@ -22,7 +22,7 @@ public class AlertService {
     }
 
     public List<AlertDto> getAllAlerts() {
-        return alertRepository.findAll().stream().map(alert -> alertDtoConverter.convert(alert)).toList();
+        return alertRepository.findAll().stream().map(alertDtoConverter::convert).toList();
     }
 
     public AlertDto getAlertById(String id) {
