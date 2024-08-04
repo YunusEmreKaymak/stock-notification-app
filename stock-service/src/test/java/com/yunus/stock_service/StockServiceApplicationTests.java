@@ -1,10 +1,10 @@
-package com.yunus.stock_notification_app;
+package com.yunus.stock_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class StockNotificationAppApplicationTests {
+class StockServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
