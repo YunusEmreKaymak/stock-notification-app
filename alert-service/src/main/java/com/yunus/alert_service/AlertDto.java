@@ -1,4 +1,4 @@
-package com.yunus.stock_notification_app.Alert;
+package com.yunus.alert_service;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

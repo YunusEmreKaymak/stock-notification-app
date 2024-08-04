@@ -1,4 +1,4 @@
-package com.yunus.stock_notification_app.Alert;
+package com.yunus.alert_service;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,13 +1,13 @@
-package com.yunus.stock_notification_app;
+package com.yunus.alert_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class StockNotificationAppApplication {
+public class AlertServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(StockNotificationAppApplication.class, args);
+		SpringApplication.run(AlertServiceApplication.class, args);
 	}
 
 }

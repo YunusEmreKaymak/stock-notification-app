@@ -1,4 +1,4 @@
-package com.yunus.stock_notification_app.Alert;
+package com.yunus.alert_service;
 
 
 import jakarta.annotation.Nonnull;
