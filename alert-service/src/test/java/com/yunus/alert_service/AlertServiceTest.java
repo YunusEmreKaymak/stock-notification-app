@@ -46,8 +46,8 @@ class AlertServiceTest {
     @Test
     void shouldGetAllAlerts() {
         when(alertRepository.findAll()).thenReturn(alerts);
-        when(alertDtoConverter.convert(alerts.get(0))).thenReturn(alertDtos.get(0));
-        when(alertDtoConverter.convert(alerts.get(1))).thenReturn(alertDtos.get(1));
+        when(alertDtoConverter.convertToDto(alerts.get(0))).thenReturn(alertDtos.get(0));
+        when(alertDtoConverter.convertToDto(alerts.get(1))).thenReturn(alertDtos.get(1));
 
         assertEquals(alertService.getAllAlerts(), alertDtos);
     }
@@ -57,7 +57,7 @@ class AlertServiceTest {
         String uuid = UUID.randomUUID().toString();
         when(alertRepository.existsById(uuid)).thenReturn(true);
         when(alertRepository.findById(uuid)).thenReturn(Optional.ofNullable(alerts.getFirst()));
-        when(alertDtoConverter.convert(alerts.getFirst())).thenReturn(alertDtos.getFirst());
+        when(alertDtoConverter.convertToDto(alerts.getFirst())).thenReturn(alertDtos.getFirst());
 
         assertEquals(alertDtos.getFirst(), alertService.getAlertById(uuid));
     }

@@ -17,18 +17,18 @@ public class AlertService {
         this.alertDtoConverter = alertDtoConverter;
     }
 
-    public void createAlert(Alert alert) {
-        alertRepository.save(alert);
+    public void createAlert(AlertDto alert) {
+        alertRepository.save(alertDtoConverter.convertToModel(alert));
     }
 
     public List<AlertDto> getAllAlerts() {
-        return alertRepository.findAll().stream().map(alertDtoConverter::convert).toList();
+        return alertRepository.findAll().stream().map(alertDtoConverter::convertToDto).toList();
     }
 
     public AlertDto getAlertById(String id) {
         if (!alertRepository.existsById(id)) throw new AlertNotFoundException("Alert not found by id: " + id);
 
-        return alertDtoConverter.convert(alertRepository.findById(id).get());
+        return alertDtoConverter.convertToDto(alertRepository.findById(id).get());
     }
 
     public void deleteAlertById(String id) {

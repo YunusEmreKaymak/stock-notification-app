@@ -16,7 +16,7 @@ public class AlertController {
     }
 
     @PostMapping()
-    public void createAlert(@RequestBody Alert alert) {
+    public void createAlert(@RequestBody AlertDto alert) {
         alertService.createAlert(alert);
     }
 
