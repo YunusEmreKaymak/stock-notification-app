@@ -56,10 +56,10 @@ class AlertServiceTest {
     void shouldGetAlertWhenGivenValidId() {
         String uuid = UUID.randomUUID().toString();
         when(alertRepository.existsById(uuid)).thenReturn(true);
-        when(alertRepository.findById(uuid)).thenReturn(Optional.ofNullable(alerts.get(0)));
-        when(alertDtoConverter.convert(alerts.get(0))).thenReturn(alertDtos.get(0));
+        when(alertRepository.findById(uuid)).thenReturn(Optional.ofNullable(alerts.getFirst()));
+        when(alertDtoConverter.convert(alerts.getFirst())).thenReturn(alertDtos.getFirst());
 
-        assertEquals(alertDtos.get(0), alertService.getAlertById(uuid));
+        assertEquals(alertDtos.getFirst(), alertService.getAlertById(uuid));
     }
 
 }
