@@ -1,5 +1,10 @@
 package com.yunus.alert_service;
 
+import com.yunus.alert_service.dto.AlertDto;
+import com.yunus.alert_service.dto.AlertDtoConverter;
+import com.yunus.alert_service.model.Alert;
+import com.yunus.alert_service.repository.AlertRepository;
+import com.yunus.alert_service.service.AlertService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

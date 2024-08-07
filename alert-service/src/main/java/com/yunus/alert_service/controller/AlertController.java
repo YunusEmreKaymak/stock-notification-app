@@ -1,5 +1,7 @@
 package com.yunus.alert_service;
 
+import com.yunus.alert_service.dto.AlertDto;
+import com.yunus.alert_service.service.AlertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

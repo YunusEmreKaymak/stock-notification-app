@@ -1,5 +1,9 @@
 package com.yunus.alert_service;
 
+import com.yunus.alert_service.dto.AlertDto;
+import com.yunus.alert_service.dto.AlertDtoConverter;
+import com.yunus.alert_service.exception.AlertNotFoundException;
+import com.yunus.alert_service.repository.AlertRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

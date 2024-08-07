@@ -1,5 +1,8 @@
 package com.yunus.alert_service;
 
+import com.yunus.alert_service.controller.AlertController;
+import com.yunus.alert_service.dto.AlertDto;
+import com.yunus.alert_service.service.AlertService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
