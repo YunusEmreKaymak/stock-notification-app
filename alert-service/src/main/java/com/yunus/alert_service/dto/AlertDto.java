@@ -1,4 +1,4 @@
-package com.yunus.alert_service;
+package com.yunus.alert_service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

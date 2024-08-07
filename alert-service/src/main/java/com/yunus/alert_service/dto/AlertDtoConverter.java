@@ -1,5 +1,6 @@
-package com.yunus.alert_service;
+package com.yunus.alert_service.dto;
 
+import com.yunus.alert_service.model.Alert;
 import org.springframework.stereotype.Component;
 
 @Component

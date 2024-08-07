@@ -1,4 +1,4 @@
-package com.yunus.alert_service;
+package com.yunus.alert_service.controller;
 
 import com.yunus.alert_service.dto.AlertDto;
 import com.yunus.alert_service.service.AlertService;

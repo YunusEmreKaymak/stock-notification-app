@@ -1,4 +1,4 @@
-package com.yunus.alert_service;
+package com.yunus.alert_service.model;
 
 
 import jakarta.annotation.Nonnull;
