@@ -9,13 +9,13 @@ import lombok.*;
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
 public class Alert {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Nonnull
     private String id;
     @Column
     @Nonnull

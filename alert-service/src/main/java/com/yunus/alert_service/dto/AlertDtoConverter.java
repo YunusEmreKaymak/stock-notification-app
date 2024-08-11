@@ -10,6 +10,6 @@ public class AlertDtoConverter {
     }
 
     public Alert convertToModel(AlertDto alert) {
-        return new Alert(alert.getId(), alert.getStockName(), alert.getMinPrice(), alert.getMaxPrice(), alert.isActive());
+        return new Alert(alert.getStockName(), alert.getMinPrice(), alert.getMaxPrice(), alert.isActive());
     }
 }
