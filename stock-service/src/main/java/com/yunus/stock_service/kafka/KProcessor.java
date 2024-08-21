@@ -58,7 +58,7 @@ public class KProcessor {
         return streamsConfiguration;
     }
 
-    public static Double process(String body) throws JsonProcessingException {
+    private static Double process(String body) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         RequestBody requestBody = objectMapper.readValue(body, RequestBody.class);
 
@@ -70,7 +70,7 @@ public class KProcessor {
         return calculateAverage(dailyData);
     }
 
-    public static Double calculateAverage(DailyData dailyData) {
+    private static Double calculateAverage(DailyData dailyData) {
         return (dailyData.getHigh() + dailyData.getLow()) / 2;
     }
 }

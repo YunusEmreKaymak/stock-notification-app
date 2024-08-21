@@ -1,9 +1,9 @@
 package com.yunus.stock_service.kafka;
 
+import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.apache.kafka.clients.producer.KafkaProducer;
 
 import java.util.Properties;
 
@@ -22,7 +22,7 @@ public class KProducer {
         producer.close();
     }
 
-    public static Properties getKafkaProperties(String bootstrapServers) {
+    private static Properties getKafkaProperties(String bootstrapServers) {
         Properties properties = new Properties();
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
