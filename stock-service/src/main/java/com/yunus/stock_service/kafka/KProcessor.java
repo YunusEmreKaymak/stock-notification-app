@@ -17,6 +17,12 @@ import java.util.AbstractMap;
 import java.util.Properties;
 
 public class KProcessor {
+    private static final int THREAD_SLEEP_TIME_FOR_KAFKA_STREAM = 30000;
+    private static final int DIVISION_VALUE_TO_CALCULATE_AVERAGE = 2;
+    private static final int LATEST_PAST_DAY_FREE_API_CAN_FETCH = 3;
+    private static final String KAFKA_PROCESSOR_NAME = "stock-info-processor";
+    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd";
+
     public static void stream(String bootstrapServers, String topic, Double maxPrice, Double minPrice) throws InterruptedException {
         Properties streamsConfiguration = getKafkaProperties(bootstrapServers);
 
@@ -37,7 +43,7 @@ public class KProcessor {
         KafkaStreams streams = new KafkaStreams(topology, streamsConfiguration);
         streams.start();
 
-        Thread.sleep(30000);
+        Thread.sleep(THREAD_SLEEP_TIME_FOR_KAFKA_STREAM);
         streams.close();
 
     }
@@ -55,7 +61,7 @@ public class KProcessor {
         Properties streamsConfiguration = new Properties();
         streamsConfiguration.put(
                 StreamsConfig.APPLICATION_ID_CONFIG,
-                "stock-info-processor");
+                KAFKA_PROCESSOR_NAME);
 
         streamsConfiguration.put(
                 StreamsConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -73,8 +79,8 @@ public class KProcessor {
         ObjectMapper objectMapper = new ObjectMapper();
         RequestBody requestBody = objectMapper.readValue(body, RequestBody.class);
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String yesterday = dtf.format(LocalDateTime.now().minusDays(3));
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+        String yesterday = dtf.format(LocalDateTime.now().minusDays(LATEST_PAST_DAY_FREE_API_CAN_FETCH));
 
         DailyData dailyData = requestBody.dailyData.get(yesterday);
 
@@ -84,6 +90,6 @@ public class KProcessor {
     }
 
     private static Double calculateAverage(DailyData dailyData) {
-        return (dailyData.getHigh() + dailyData.getLow()) / 2;
+        return (dailyData.getHigh() + dailyData.getLow()) / DIVISION_VALUE_TO_CALCULATE_AVERAGE;
     }
 }
