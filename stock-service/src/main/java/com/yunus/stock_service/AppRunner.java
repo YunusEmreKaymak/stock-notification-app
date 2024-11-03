@@ -17,13 +17,13 @@ import java.util.concurrent.ExecutionException;
 @Component
 public class AppRunner implements ApplicationRunner {
     @Value("${alphavantage.api.key}")
-    private static String apiKey;
+    private String apiKey;
 
     @Value("${kafka.config.bootstrapServers}")
-    private static String bootstrapServers;
+    private String bootstrapServers;
 
     @Value("${kafka.config.topic}")
-    private static String topic;
+    private String topic;
 
     private final AlertServiceClient alertServiceClient;
 
@@ -42,9 +42,8 @@ public class AppRunner implements ApplicationRunner {
         List<AlertDto> alerts = alertServiceClient.getAllAlerts();
         for (AlertDto alert : alerts) {
             String stockData = FetchStock.getStockData(alert.getStockName(), apiKey);
-            if (alert.isActive()) {
-                streamAlert(stockData);
-            }
+
+            if (alert.isActive()) streamAlert(stockData);
         }
     }
 
