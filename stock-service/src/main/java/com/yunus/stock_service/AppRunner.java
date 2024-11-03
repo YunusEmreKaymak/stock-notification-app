@@ -42,7 +42,9 @@ public class AppRunner implements ApplicationRunner {
         List<AlertDto> alerts = alertServiceClient.getAllAlerts();
         for (AlertDto alert : alerts) {
             String stockData = FetchStock.getStockData(alert.getStockName(), apiKey);
-            streamAlert(stockData);
+            if (alert.isActive()) {
+                streamAlert(stockData);
+            }
         }
     }
 
