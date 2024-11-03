@@ -40,6 +40,15 @@ public class KProcessor {
 
     }
 
+
+    private static void checkPriceRange(Double price, Double maxPrice, Double minPrice, String stockSymbol) {
+        if (price > maxPrice) {
+            //NotificationHandler.sendNotification("Max", maxPrice, stockSymbol);
+        } else if (price < minPrice) {
+            //NotificationHandler.sendNotification("Min", minPrice, stockSymbol);
+        }
+    }
+
     private static Properties getKafkaProperties(String bootstrapServers) {
         Properties streamsConfiguration = new Properties();
         streamsConfiguration.put(
