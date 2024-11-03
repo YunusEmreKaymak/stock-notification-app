@@ -13,10 +13,11 @@ import org.apache.kafka.streams.kstream.KStream;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.AbstractMap;
 import java.util.Properties;
 
 public class KProcessor {
-    public static void stream(String bootstrapServers, String topic) throws InterruptedException {
+    public static void stream(String bootstrapServers, String topic, Double maxPrice, Double minPrice) throws InterruptedException {
         Properties streamsConfiguration = getKafkaProperties(bootstrapServers);
 
         StreamsBuilder builder = new StreamsBuilder();
@@ -29,7 +30,8 @@ public class KProcessor {
                         throw new RuntimeException(e);
                     }
                 })
-                .peek((key, value) -> System.out.println("Value: " + value));
+                .peek((key, value) -> checkPriceRange(value.getValue(), maxPrice, minPrice, value.getKey()));
+
 
         Topology topology = builder.build();
         KafkaStreams streams = new KafkaStreams(topology, streamsConfiguration);
@@ -67,16 +69,18 @@ public class KProcessor {
         return streamsConfiguration;
     }
 
-    private static Double process(String body) throws JsonProcessingException {
+    private static AbstractMap.SimpleEntry<String, Double> process(String body) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         RequestBody requestBody = objectMapper.readValue(body, RequestBody.class);
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String yesterday = dtf.format(LocalDateTime.now().minusDays(3));
 
-        DailyData dailyData = requestBody.getDailyData().get(yesterday);
+        DailyData dailyData = requestBody.dailyData.get(yesterday);
 
-        return calculateAverage(dailyData);
+        return new AbstractMap.SimpleEntry<>(requestBody.metaData.getSymbol(), calculateAverage(dailyData));
+
+
     }
 
     private static Double calculateAverage(DailyData dailyData) {
