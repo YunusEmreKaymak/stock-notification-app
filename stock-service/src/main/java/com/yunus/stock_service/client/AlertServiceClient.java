@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "alert-service", path = "/alert")
+@FeignClient(name = "alert-service", path = "/alert", url = "${alert.service.url}")
 public interface AlertServiceClient {
     @PostMapping()
     void createAlert(@RequestBody AlertDto alert);

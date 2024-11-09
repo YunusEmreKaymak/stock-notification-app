@@ -1,0 +1,62 @@
+services:
+  postgres:
+    container_name: postgres_for_alert_app
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgresql
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=stock-notification
+  kafka:
+    image: apache/kafka:latest
+    container_name: kafka_from_compose
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://localhost:9092,CONTROLLER://localhost:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_NUM_PARTITIONS: 3
+  eureka:
+    container_name: eureka-server
+    ports:
+      - 8761:8761
+    depends_on:
+      - postgres
+      - kafka
+    build:
+      context: /eureka-server
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+  alert:
+    container_name: alert-service
+    ports:
+      - 8081:8081
+    depends_on:
+      - eureka
+    build:
+      context: /alert-service
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+  stock:
+    container_name: stock-service
+    ports:
+      - 8082:8082
+    depends_on:
+      - alert
+    build:
+      context: /stock-service
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
