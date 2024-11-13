@@ -49,14 +49,14 @@ services:
       dockerfile: Dockerfile
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-  stock:
-    container_name: stock-service
+  stock-ingestion:
+    container_name: stock-ingestion-service
     ports:
       - 8082:8082
     depends_on:
       - alert
     build:
-      context: /stock-service
+      context: /stock-ingestion-service
       dockerfile: Dockerfile
     environment:
       - SPRING_PROFILES_ACTIVE=docker

@@ -15,7 +15,7 @@
 	<description>Stock Notification Project</description>
 	<packaging>pom</packaging>
 	<modules>
-		<module>stock-service</module>
+		<module>stock-ingestion-service</module>
 		<module>alert-service</module>
 		<module>eureka-server</module>
 	</modules>
@@ -37,11 +37,6 @@
 <!--			<scope>runtime</scope>-->
 <!--			<optional>true</optional>-->
 <!--		</dependency>-->
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-prometheus</artifactId>
-			<scope>runtime</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
