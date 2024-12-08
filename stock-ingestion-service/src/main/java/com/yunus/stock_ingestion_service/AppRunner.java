@@ -4,6 +4,7 @@ import com.yunus.stock_ingestion_service.client.AlertServiceClient;
 import com.yunus.stock_ingestion_service.dto.AlertDto;
 import com.yunus.stock_ingestion_service.kafka.KProcessor;
 import com.yunus.stock_ingestion_service.kafka.KProducer;
+import com.yunus.stock_ingestion_service.kafka.KTopicCreator;
 import com.yunus.stock_ingestion_service.stock.FetchStock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -21,8 +22,8 @@ public class AppRunner implements ApplicationRunner {
     private String apiKey;
     @Value("${kafka.config.bootstrapServers}")
     private String bootstrapServers;
-    @Value("${kafka.config.topic}")
-    private String topic;
+    private final String TOPIC_NAME_BEFORE_STREAM = "raw-stock-prices";
+    private final String TOPIC_NAME_AFTER_STREAM = "processed-stock-prices";
 
 
     public AppRunner(AlertServiceClient alertServiceClient) {
@@ -45,8 +46,10 @@ public class AppRunner implements ApplicationRunner {
     }
 
     private void streamAlert(String stockData, Double maxPrice, Double minPrice) throws InterruptedException {
-        KProcessor.stream(bootstrapServers, topic, maxPrice, minPrice);
-        KProducer.producer(stockData, bootstrapServers, topic);
+        KTopicCreator.createTopic(bootstrapServers, TOPIC_NAME_BEFORE_STREAM);
+        KTopicCreator.createTopic(bootstrapServers, TOPIC_NAME_AFTER_STREAM);
+        KProcessor.stream(bootstrapServers, TOPIC_NAME_BEFORE_STREAM, maxPrice, minPrice);
+        KProducer.producer(stockData, bootstrapServers, TOPIC_NAME_BEFORE_STREAM);
     }
 }
 
