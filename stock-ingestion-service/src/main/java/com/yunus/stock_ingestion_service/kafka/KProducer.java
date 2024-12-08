@@ -9,11 +9,11 @@ import java.util.Properties;
 
 public class KProducer {
 
-    public static void producer(String data, String bootstrapServers, String topic) {
+    public static void producer(String stockSymbol, String data, String bootstrapServers, String topic_name_before_stream) {
         Properties properties = getKafkaProperties(bootstrapServers);
 
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
-        ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, data);
+        ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic_name_before_stream, stockSymbol, data);
 
         producer.send(producerRecord);
 
