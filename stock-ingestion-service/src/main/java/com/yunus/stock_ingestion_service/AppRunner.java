@@ -9,6 +9,7 @@ import com.yunus.stock_ingestion_service.stock.FetchStock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.net.URISyntaxException;
@@ -35,7 +36,7 @@ public class AppRunner implements ApplicationRunner {
         checkAlert(alertServiceClient);
     }
 
-
+    @Scheduled(cron = "0 0 0 * * ?")
     private void checkAlert(AlertServiceClient alertServiceClient) throws URISyntaxException, ExecutionException, InterruptedException {
         List<AlertDto> alerts = alertServiceClient.getAllAlerts();
         for (AlertDto alert : alerts) {
