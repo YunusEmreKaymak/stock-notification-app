@@ -37,6 +37,10 @@ public class AppRunner implements ApplicationRunner {
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
+    public void scheduledJob() throws URISyntaxException, ExecutionException, InterruptedException {
+        checkAlert(alertServiceClient);
+    }
+
     private void checkAlert(AlertServiceClient alertServiceClient) throws URISyntaxException, ExecutionException, InterruptedException {
         List<AlertDto> alerts = alertServiceClient.getAllAlerts();
         for (AlertDto alert : alerts) {
