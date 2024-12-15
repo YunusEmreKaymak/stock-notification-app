@@ -7,6 +7,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,8 @@ import java.util.Properties;
 public class KConsumer {
     private static final Logger log = LoggerFactory.getLogger(KConsumer.class);
     private final String GROUP_ID_NAME = "stock-info-processor";
-    private final String BOOTSTRAP_SERVERS = "127.0.0.1:9092";
+    @Value("${kafka.config.bootstrapServers}")
+    private String BOOTSTRAP_SERVERS;
     private final String AUTO_OFFSET_RESET_EARLIEST = "earliest";
     private final String STRING_DESERIALIZER = StringDeserializer.class.getName();
     private final RecordSavingService recordSavingService;
@@ -40,7 +42,7 @@ public class KConsumer {
         Properties properties = getKafkaProperties();
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
-        consumer.subscribe(List.of("processed-stock-prices3"));
+        consumer.subscribe(List.of("processed-stock-prices"));
 
         while (true) {
             ConsumerRecords<String, String> records =

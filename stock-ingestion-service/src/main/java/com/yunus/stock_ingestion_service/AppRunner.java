@@ -19,8 +19,7 @@ import java.util.concurrent.ExecutionException;
 @Component
 public class AppRunner implements ApplicationRunner {
     private final AlertServiceClient alertServiceClient;
-    @Value("${alphavantage.api.key}")
-    private String apiKey;
+    private final String apiKey = "";
     @Value("${kafka.config.bootstrapServers}")
     private String bootstrapServers;
     private final String TOPIC_NAME_BEFORE_STREAM = "raw-stock-prices";
