@@ -10,11 +10,14 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.AbstractMap;
 import java.util.Properties;
 
 public class KProcessor {
+    private static final Logger log = LoggerFactory.getLogger(KProcessor.class);
     private static final int THREAD_SLEEP_TIME_FOR_KAFKA_STREAM = 30000;
     private static final String KAFKA_PROCESSOR_NAME = "stock-info-processor";
     private static final String STRING_SERDE = Serdes.String().getClass().getName();
@@ -25,9 +28,9 @@ public class KProcessor {
 
         KafkaStreams streams = createKafkaStreams(topic_name_before_stream, topic_name_after_stream, streamsConfiguration);
         streams.start();
-
-        Thread.sleep(THREAD_SLEEP_TIME_FOR_KAFKA_STREAM);
-        streams.close();
+        log.info("Kafka Streams Started");
+//        Thread.sleep(THREAD_SLEEP_TIME_FOR_KAFKA_STREAM);
+//        streams.close();
     }
 
     private static Properties getKafkaProperties(String bootstrapServers) {

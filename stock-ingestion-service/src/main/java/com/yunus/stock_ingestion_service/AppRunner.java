@@ -6,6 +6,8 @@ import com.yunus.stock_ingestion_service.kafka.KProcessor;
 import com.yunus.stock_ingestion_service.kafka.KProducer;
 import com.yunus.stock_ingestion_service.kafka.KTopicCreator;
 import com.yunus.stock_ingestion_service.stock.FetchStock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -18,6 +20,7 @@ import java.util.concurrent.ExecutionException;
 
 @Component
 public class AppRunner implements ApplicationRunner {
+    private static final Logger log = LoggerFactory.getLogger(AppRunner.class);
     private final AlertServiceClient alertServiceClient;
     private final String apiKey = "";
     @Value("${kafka.config.bootstrapServers}")
@@ -37,6 +40,7 @@ public class AppRunner implements ApplicationRunner {
 
     @Scheduled(cron = "0 0 0 * * ?")
     public void scheduledJob() throws URISyntaxException, ExecutionException, InterruptedException {
+        log.info("Scheduled Job Started");
         checkAlert(alertServiceClient);
     }
 
