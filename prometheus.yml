@@ -19,4 +19,9 @@ scrape_configs:
     scrape_interval: 5s
     metrics_path: /actuator/prometheus
     static_configs:
-      - targets: [ 'web:8083','web:8082','web:8081','web:8761','web:5432' ]
+      - targets: [
+        'alert:8081',
+        'stock-persistence:8083',
+        #'stock-ingestion:8082',
+        #'eureka:8761'
+      ]
