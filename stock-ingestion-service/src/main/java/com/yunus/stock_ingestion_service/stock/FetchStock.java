@@ -15,6 +15,10 @@ public class FetchStock {
                 .uri(new URI("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + stockName + "&apikey=" + apiKey))
                 .build();
 
-        return client.sendAsync(req, HttpResponse.BodyHandlers.ofString()).get().body();
+        String responseBody = client.sendAsync(req, HttpResponse.BodyHandlers.ofString()).get().body();
+
+        client.close();
+
+        return responseBody;
     }
 }
