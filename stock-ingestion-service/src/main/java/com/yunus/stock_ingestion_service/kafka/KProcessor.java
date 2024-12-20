@@ -20,17 +20,18 @@ public class KProcessor {
     private static final Logger log = LoggerFactory.getLogger(KProcessor.class);
     private static final int THREAD_SLEEP_TIME_FOR_KAFKA_STREAM = 30000;
     private static final String KAFKA_PROCESSOR_NAME = "stock-info-processor";
-    private static final String STRING_SERDE = Serdes.String().getClass().getName();
+    private static final String STRING_SERDE = Serdes.StringSerde.class.getName();
     private static final String CUSTOM_SERDE = CustomSerde.class.getName();
 
     public static void stream(String bootstrapServers, String topic_name_before_stream, String topic_name_after_stream, Double maxPrice, Double minPrice) throws InterruptedException {
         Properties streamsConfiguration = getKafkaProperties(bootstrapServers);
 
-        KafkaStreams streams = createKafkaStreams(topic_name_before_stream, topic_name_after_stream, streamsConfiguration);
-        streams.start();
-        log.info("Kafka Streams Started");
+        try (KafkaStreams streams = createKafkaStreams(topic_name_before_stream, topic_name_after_stream, streamsConfiguration)) {
+            streams.start();
+            log.info("Kafka Streams Started");
 //        Thread.sleep(THREAD_SLEEP_TIME_FOR_KAFKA_STREAM);
 //        streams.close();
+        }
     }
 
     private static Properties getKafkaProperties(String bootstrapServers) {
