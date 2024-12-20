@@ -22,11 +22,8 @@ import java.util.concurrent.ExecutionException;
 public class AppRunner implements ApplicationRunner {
     private static final Logger log = LoggerFactory.getLogger(AppRunner.class);
     private final AlertServiceClient alertServiceClient;
-    private final String apiKey = "";
     @Value("${kafka.config.bootstrapServers}")
     private String bootstrapServers;
-    private final String TOPIC_NAME_BEFORE_STREAM = "raw-stock-prices";
-    private final String TOPIC_NAME_AFTER_STREAM = "processed-stock-prices";
 
 
     public AppRunner(AlertServiceClient alertServiceClient) {
@@ -46,15 +43,22 @@ public class AppRunner implements ApplicationRunner {
 
     private void checkAlert(AlertServiceClient alertServiceClient) throws URISyntaxException, ExecutionException, InterruptedException {
         List<AlertDto> alerts = alertServiceClient.getAllAlerts();
-        for (AlertDto alert : alerts) {
-            String stockData = FetchStock.getStockData(alert.getStockName(), apiKey);
+        if (!alerts.isEmpty()) {
+            String apiKey = "";
+            for (AlertDto alert : alerts) {
 
-            if (alert.isActive())
-                streamAlert(alert.getStockName(), stockData);
+                String stockData = FetchStock.getStockData(alert.getStockName(), apiKey);
+
+                if (alert.isActive())
+                    streamAlert(alert.getStockName(), stockData);
+            }
         }
     }
 
     private void streamAlert(String stockSymbol, String stockData) {
+        String TOPIC_NAME_BEFORE_STREAM = "raw-stock-prices";
+        String TOPIC_NAME_AFTER_STREAM = "processed-stock-prices";
+
         KTopicCreator.createTopic(bootstrapServers, TOPIC_NAME_BEFORE_STREAM);
         KTopicCreator.createTopic(bootstrapServers, TOPIC_NAME_AFTER_STREAM);
         KProcessor.stream(bootstrapServers, TOPIC_NAME_BEFORE_STREAM, TOPIC_NAME_AFTER_STREAM);
