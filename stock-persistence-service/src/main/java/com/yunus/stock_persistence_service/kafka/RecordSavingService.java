@@ -20,7 +20,6 @@ public class RecordSavingService {
     private final StockService stockService;
     private final StockHistoryService stockHistoryService;
     private final StockDtoConverter stockDtoConverter;
-    private final String simpleDateTimeFormatPattern = "yyyy-MM-dd";
 
     public RecordSavingService(StockService stockService, StockHistoryService stockHistoryService, StockDtoConverter stockDtoConverter) {
         this.stockService = stockService;
@@ -33,6 +32,7 @@ public class RecordSavingService {
         try {
             ProcessedData processedData = objectMapper.readValue(record.value(), ProcessedData.class);
             List<String> dayList = processedData.getKeyList();
+            String simpleDateTimeFormatPattern = "yyyy-MM-dd";
             SimpleDateFormat sdf = new SimpleDateFormat(simpleDateTimeFormatPattern);
             String symbol = record.key();
             if (!stockService.doesStockExistBySymbol(symbol)) {

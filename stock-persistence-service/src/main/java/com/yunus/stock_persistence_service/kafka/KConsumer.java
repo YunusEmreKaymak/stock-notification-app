@@ -19,11 +19,9 @@ import java.util.Properties;
 @Service
 public class KConsumer {
     private static final Logger log = LoggerFactory.getLogger(KConsumer.class);
-    private final String GROUP_ID_NAME = "stock-info-processor";
     @Value("${kafka.config.bootstrapServers}")
     private String BOOTSTRAP_SERVERS;
-    private final String AUTO_OFFSET_RESET_EARLIEST = "earliest";
-    private final String STRING_DESERIALIZER = StringDeserializer.class.getName();
+    private final String stringDeserializer = StringDeserializer.class.getName();
     private final RecordSavingService recordSavingService;
 
     public KConsumer(RecordSavingService recordSavingService) {
@@ -40,11 +38,13 @@ public class KConsumer {
 
     public void consumer() {
         Properties properties = getKafkaProperties();
+        String topicName = "processed-stock-prices";
 
         try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties)) {
-            consumer.subscribe(List.of("processed-stock-prices"));
+            consumer.subscribe(List.of(topicName));
 
             while (true) {
+                log.info("Kafka consumer started from topic: {}", topicName);
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
 
                 for (ConsumerRecord<String, String> record : records) {
@@ -55,12 +55,16 @@ public class KConsumer {
     }
 
     private Properties getKafkaProperties() {
+        final String GROUP_ID_NAME = "stock-info-processor";
+        final String AUTO_OFFSET_RESET_EARLIEST = "earliest";
+
         Properties properties = new Properties();
         properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
-        properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, STRING_DESERIALIZER);
-        properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, STRING_DESERIALIZER);
+        properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, stringDeserializer);
+        properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, stringDeserializer);
         properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, GROUP_ID_NAME);
         properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, AUTO_OFFSET_RESET_EARLIEST);
+
         return properties;
     }
 
