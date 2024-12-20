@@ -41,16 +41,15 @@ public class KConsumer {
     public void consumer() {
         Properties properties = getKafkaProperties();
 
-        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
-        consumer.subscribe(List.of("processed-stock-prices"));
+        try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties)) {
+            consumer.subscribe(List.of("processed-stock-prices"));
 
-        while (true) {
-            ConsumerRecords<String, String> records =
-                    consumer.poll(Duration.ofMillis(100));
+            while (true) {
+                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
 
-
-            for (ConsumerRecord<String, String> record : records) {
-                recordSavingService.saveRecord(record);
+                for (ConsumerRecord<String, String> record : records) {
+                    recordSavingService.saveRecord(record);
+                }
             }
         }
     }
