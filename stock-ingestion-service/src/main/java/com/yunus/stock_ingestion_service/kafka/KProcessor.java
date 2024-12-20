@@ -23,7 +23,7 @@ public class KProcessor {
     private static final String STRING_SERDE = Serdes.StringSerde.class.getName();
     private static final String CUSTOM_SERDE = CustomSerde.class.getName();
 
-    public static void stream(String bootstrapServers, String topic_name_before_stream, String topic_name_after_stream, Double maxPrice, Double minPrice) throws InterruptedException {
+    public static void stream(String bootstrapServers, String topic_name_before_stream, String topic_name_after_stream) {
         Properties streamsConfiguration = getKafkaProperties(bootstrapServers);
 
         try (KafkaStreams streams = createKafkaStreams(topic_name_before_stream, topic_name_after_stream, streamsConfiguration)) {

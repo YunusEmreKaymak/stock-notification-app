@@ -50,14 +50,14 @@ public class AppRunner implements ApplicationRunner {
             String stockData = FetchStock.getStockData(alert.getStockName(), apiKey);
 
             if (alert.isActive())
-                streamAlert(alert.getStockName(), stockData, alert.getMaxPrice(), alert.getMinPrice());
+                streamAlert(alert.getStockName(), stockData);
         }
     }
 
-    private void streamAlert(String stockSymbol, String stockData, Double maxPrice, Double minPrice) throws InterruptedException {
+    private void streamAlert(String stockSymbol, String stockData) {
         KTopicCreator.createTopic(bootstrapServers, TOPIC_NAME_BEFORE_STREAM);
         KTopicCreator.createTopic(bootstrapServers, TOPIC_NAME_AFTER_STREAM);
-        KProcessor.stream(bootstrapServers, TOPIC_NAME_BEFORE_STREAM, TOPIC_NAME_AFTER_STREAM, maxPrice, minPrice);
+        KProcessor.stream(bootstrapServers, TOPIC_NAME_BEFORE_STREAM, TOPIC_NAME_AFTER_STREAM);
         KProducer.producer(stockSymbol, stockData, bootstrapServers, TOPIC_NAME_BEFORE_STREAM);
     }
 }
