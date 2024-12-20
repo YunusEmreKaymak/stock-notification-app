@@ -1,6 +1,5 @@
 package com.yunus.stock_ingestion_service.kafka;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yunus.stock_ingestion_service.model.DailyData;
 import com.yunus.stock_ingestion_service.model.RequestBody;
 import org.apache.kafka.common.serialization.Serdes;
@@ -57,13 +56,7 @@ public class KProcessor {
 
         KStream<String, RequestBody> rawStream = builder.stream(topic_name_before_stream, Consumed.with(Serdes.String(), new CustomSerde<>(RequestBody.class)));
 
-        KStream<String, AbstractMap.SimpleEntry<String, DailyData>> processedStream = rawStream.mapValues(value -> {
-            try {
-                return process(value);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        KStream<String, AbstractMap.SimpleEntry<String, DailyData>> processedStream = rawStream.mapValues(KProcessor::process);
 
         processedStream.to(topic_name_after_stream);
 
@@ -72,7 +65,7 @@ public class KProcessor {
     }
 
 
-    private static AbstractMap.SimpleEntry<String, DailyData> process(RequestBody requestBody) throws JsonProcessingException {
+    private static AbstractMap.SimpleEntry<String, DailyData> process(RequestBody requestBody) {
 
         if (requestBody != null) {
             return new AbstractMap.SimpleEntry<>(requestBody.metaData.getLastRefreshed(), requestBody.dailyData.get(requestBody.metaData.getLastRefreshed()));
